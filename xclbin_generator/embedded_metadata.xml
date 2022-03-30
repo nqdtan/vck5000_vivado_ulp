@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom">
+  <platform vendor="xilinx" boardid="vck5000" name="gen3x16_xdma_1" featureRomTime="0">
+    <version major="202120" minor="1"/>
+    <description/>
+    <board name="xilinx.com:vck5000:1.0" vendor="xilinx.com" fpga="xcvc1902-vsvd1760-2MP-e-S">
+      <interfaces>
+        <interface id="int1" name="PCIe" type="gen3x16"/>
+      </interfaces>
+      <memories>
+        <memory name="mem0" type="ddr4" size="8GB"/>
+      </memories>
+      <images>
+        <image name="vck5000_image.jpg" type="HDPI"/>
+        <image name="" type="MDPI"/>
+        <image name="" type="LDPI"/>
+      </images>
+      <id>
+        <vendor>0x10ee</vendor>
+        <device>0x5048</device>
+        <subsystem>0x000e</subsystem>
+      </id>
+    </board>
+    <build_flow/>
+    <host architecture="x86_64"/>
+    <device name="fpga0" fpgaDevice="versal:xcvc1902:vsvd1760:-2MP:e:S">
+      <core name="OCL_REGION_0">
+        <kernel name="vecadd">
+          <port name="s_axi_control" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="mem_a_offset_lo" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x010" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="mem_a_offset_hi" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x014" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="mem_b_offset_lo" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x01c" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="mem_b_offset_hi" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x020" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="mem_c_offset_lo" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x028" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="mem_c_offset_hi" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x02c" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <arg name="len" addressQualifier="0" id="0" port="s_axi_control" size="0x4" offset="0x034" hostOffset="0x0" hostSize="0x4" type="uint"/>
+          <instance name="vecadd">
+            <addrRemap base="0x0000000" range="0x10000" port="s_axi_control"/>
+          </instance>
+        </kernel>
+      </core>
+    </device>
+  </platform>
+</project>

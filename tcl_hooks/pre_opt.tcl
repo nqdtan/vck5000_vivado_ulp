@@ -1,0 +1,41 @@
+set_property LOC GTY_QUAD_X1Y3 [get_cells level0_i/ulp/gt_null0/gt_quad_base/inst/quad_inst] -quiet
+
+set_property PACKAGE_PIN G1     [get_ports {gt0_serial_gtx_p[0]}] -quiet
+set_property PACKAGE_PIN F1     [get_ports {gt0_serial_gtx_n[0]}] -quiet
+set_property PACKAGE_PIN D2     [get_ports {gt0_serial_grx_p[0]}] -quiet
+set_property PACKAGE_PIN C2     [get_ports {gt0_serial_grx_n[0]}] -quiet
+set_property PACKAGE_PIN G3     [get_ports {gt0_serial_gtx_p[1]}] -quiet
+set_property PACKAGE_PIN F3     [get_ports {gt0_serial_gtx_n[1]}] -quiet
+set_property PACKAGE_PIN B3     [get_ports {gt0_serial_grx_p[1]}] -quiet
+set_property PACKAGE_PIN A3     [get_ports {gt0_serial_grx_n[1]}] -quiet
+set_property PACKAGE_PIN G5     [get_ports {gt0_serial_gtx_p[2]}] -quiet
+set_property PACKAGE_PIN F5     [get_ports {gt0_serial_gtx_n[2]}] -quiet
+set_property PACKAGE_PIN D4     [get_ports {gt0_serial_grx_p[2]}] -quiet
+set_property PACKAGE_PIN C4     [get_ports {gt0_serial_grx_n[2]}] -quiet
+set_property PACKAGE_PIN E6     [get_ports {gt0_serial_gtx_p[3]}] -quiet
+set_property PACKAGE_PIN D6     [get_ports {gt0_serial_gtx_n[3]}] -quiet
+set_property PACKAGE_PIN B5     [get_ports {gt0_serial_grx_p[3]}] -quiet
+set_property PACKAGE_PIN A5     [get_ports {gt0_serial_grx_n[3]}] -quiet
+set_property PACKAGE_PIN B15    [get_ports {gt0_refclk_clk_p[0]}] -quiet
+set_property PACKAGE_PIN A15    [get_ports {gt0_refclk_clk_n[0]}] -quiet
+
+set_property LOC GTY_QUAD_X1Y4 [get_cells level0_i/ulp/gt_null1/gt_quad_base/inst/quad_inst] -quiet
+
+set_property PACKAGE_PIN E8     [get_ports {gt1_serial_gtx_p[0]}] -quiet
+set_property PACKAGE_PIN D8     [get_ports {gt1_serial_gtx_n[0]}] -quiet
+set_property PACKAGE_PIN B7     [get_ports {gt1_serial_grx_p[0]}] -quiet
+set_property PACKAGE_PIN A7     [get_ports {gt1_serial_grx_n[0]}] -quiet
+set_property PACKAGE_PIN E10    [get_ports {gt1_serial_gtx_p[1]}] -quiet
+set_property PACKAGE_PIN D10    [get_ports {gt1_serial_gtx_n[1]}] -quiet
+set_property PACKAGE_PIN B9     [get_ports {gt1_serial_grx_p[1]}] -quiet
+set_property PACKAGE_PIN A9     [get_ports {gt1_serial_grx_n[1]}] -quiet
+set_property PACKAGE_PIN E12    [get_ports {gt1_serial_gtx_p[2]}] -quiet
+set_property PACKAGE_PIN D12    [get_ports {gt1_serial_gtx_n[2]}] -quiet
+set_property PACKAGE_PIN B11    [get_ports {gt1_serial_grx_p[2]}] -quiet
+set_property PACKAGE_PIN A11    [get_ports {gt1_serial_grx_n[2]}] -quiet
+set_property PACKAGE_PIN E14    [get_ports {gt1_serial_gtx_p[3]}] -quiet
+set_property PACKAGE_PIN D14    [get_ports {gt1_serial_gtx_n[3]}] -quiet
+set_property PACKAGE_PIN B13    [get_ports {gt1_serial_grx_p[3]}] -quiet
+set_property PACKAGE_PIN A13    [get_ports {gt1_serial_grx_n[3]}] -quiet
+set_property PACKAGE_PIN D18    [get_ports {gt1_refclk_clk_p[0]}] -quiet
+set_property PACKAGE_PIN C18    [get_ports {gt1_refclk_clk_n[0]}] -quiet
