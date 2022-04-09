@@ -1,5 +1,13 @@
-Get *hw_bb_locked.dcp* and **iprepo/** from a Vitis project, and copy them here.
+Get the *hw_bb_locked.dcp* file and *iprepo* directory from a Vitis project, and copy them here.
 
-One way to achieve that is creating a Vitis application project (e.g., vecadd) with **xilinx_vck5000_gen3x16_xdma_1_202120_1** as the target platform, then set the build target to *Hardware*, and start the build process. The build can be aborted when reaching the step **Run vpl: Step create_bd**. The specified file and folder can be found at
+To do so, you can run the following Vitis command
 
-<app_name>_hw_link/Hardware/binary_container_1.build/link/vivado/vpl/.local/hw_platform
+```
+v++ -l --platform xilinx_vck5000_gen3x16_xdma_1_202120_1
+```
+
+This will launch a Vitis run in link mode without a design source. It extracts the hardware platform from the xsa file of the specified target platform *xilinx_vck5000_gen3x16_xdma_1_202120_1*.  Abort the run before the vpl step (**"Run vpl: Step create_project: Started"**). Then you can find the required file and folder at
+
+_x/link/vivado/vpl/.local/hw_platform
+
+*hw_bb_locked.dcp* is the Design Checkpoint of the base platform static design (blp). *iprepo* contains the IP files for some IPs that are used in the user partition design (ulp).
