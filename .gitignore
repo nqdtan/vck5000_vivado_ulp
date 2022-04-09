@@ -9,3 +9,10 @@ utils/iprepo
 *.info
 *.bin
 *.bak
+*.swp
+.Xil
+kernel_pack_*
+myproj_*
+project_rm_*
+src/hls/proj
+log_*

@@ -2,9 +2,6 @@
 
 # Ref: https://github.com/Xilinx/mlir-aie/blob/main/tools/chess-clang/xchesscc_wrapper
 
-XILINX_VITIS := /home/bwrc/Xilinx/Vitis/2021.2
-AIETOOLS := $(XILINX_VITIS)/aietools
-
 export RDI_DATADIR := $(AIETOOLS)/data
 export LD_LIBRARY_PATH := $(AIETOOLS)/lib/lnx64.o:$(LD_LIBRARY_PATH)
 # Carefully crafted path so that we can inject other scripts into the chess path, namely chess-clang

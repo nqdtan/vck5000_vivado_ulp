@@ -1,6 +1,4 @@
 
-XILINX_XRT=/opt/xilinx/xrt
-
 APP=app.exe
 
 .PHONY: run

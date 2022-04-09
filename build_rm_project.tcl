@@ -1,5 +1,6 @@
 set project_name [lindex $argv 0]
 set kernel [lindex $argv 1]
+set jobs [lindex $argv 2]
 
 create_project -force $project_name $project_name -part xcvc1902-vsvd1760-2MP-e-S
 set_property board_part xilinx.com:vck5000:part0:1.0 [current_project]
@@ -68,12 +69,12 @@ set_property GEN_FULL_BITSTREAM 0 [get_runs impl_1]
 set_property PR_CONFIGURATION config_1 [get_runs impl_1]
 set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO XPM_MEMORY} [current_project]
 
-launch_runs my_rm_synth_1 -jobs 1
+launch_runs my_rm_synth_1 -jobs $jobs
 wait_on_run my_rm_synth_1 -verbose
 
 link_design
 
 read_xdc constrs/_user_impl_clk.xdc
 
-launch_runs impl_1 -to_step write_bitstream -jobs 1
+launch_runs impl_1 -to_step write_bitstream -jobs $jobs
 wait_on_run impl_1 -verbose

@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
   std::string xclbin_file;
   std::cout << "Program running in hardware mode" << std::endl;
-  xclbin_file = "fpga.xclbin";
+  xclbin_file = "ulp.xclbin";
 
   // Load xclbin
   std::cout << "Load " << xclbin_file << std::endl;

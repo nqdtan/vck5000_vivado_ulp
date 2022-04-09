@@ -9,6 +9,7 @@ KERNEL_XML := kernel_pack_$(top)/component.xml
 ULP_BD := myproj_$(top)/project_1.srcs/sources_1/bd/ulp/ulp.bd
 XPR := $(project_name)/$(project_name).xpr
 
+jobs := 1
 aie := 0
 ifeq ($(aie),1)
   BD_TCL := ulp_bd_with_aie_16.tcl
@@ -17,7 +18,7 @@ else
 endif
 
 $(XPR): $(ULP_BD)
-	vivado -mode batch -source build_rm_project.tcl -tclargs $(project_name) $(top) > log_rm_$(top)_$(ts)
+	vivado -mode batch -source build_rm_project.tcl -tclargs $(project_name) $(top) $(jobs) > log_rm_$(top)_$(ts)
 
 $(ULP_BD): $(KERNEL_XML)
 	vivado -mode batch -source $(BD_TCL) -tclargs $(top)
