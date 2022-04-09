@@ -1,0 +1,19 @@
+all:
+{
+    image
+    {
+        { type=bootimage, file=level0_i_ulp_my_rm_partial.pdi }
+    }
+    image
+    {
+        name=aie_image, id=0x1c000000
+        { type=cdo
+          file = ../aie_cdo/aie_cdo_reset.bin
+          file = ../aie_cdo/aie_cdo_error_handling.bin
+          //file = ../aie_cdo/aie_cdo_clock_gating.bin
+          //file = ../aie_cdo/aie_cdo_elfs.bin
+          //file = ../aie_cdo/aie_cdo_init.bin
+          //file = ../aie_cdo/aie_cdo_enable.bin
+        }
+    }
+}

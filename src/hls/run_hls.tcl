@@ -1,10 +1,11 @@
+set hls_func [lindex $argv 0]
 
 open_project proj
-set_top vecadd
+set_top ${hls_func}
 
-add_files vecadd.cpp
+add_files ${hls_func}.cpp
 
-open_solution -reset "solution1"
+open_solution -reset "solution_${hls_func}"
 
 set_part {xcvc1902-vsvd1760-2MP-e-S}
 

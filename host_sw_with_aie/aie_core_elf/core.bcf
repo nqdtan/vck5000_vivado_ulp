@@ -1,0 +1,10 @@
+_entry_point _main_init
+_symbol      _main _after _main_init
+_symbol      _main_init 0
+_reserved DMb      0x00000 0x20000 //Don't put data in code memory
+_symbol buffer 0x38000 0x40
+_extern buffer
+
+_stack    DM_stack 0x39020  0x400 //stack for core
+_reserved DMb 0x20000 0x11f40
+_reserved DMb 0x40000 0xc0000 // And everything else the core can't see

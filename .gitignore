@@ -1,2 +1,11 @@
 utils/hw_bb_locked.dcp
 utils/iprepo
+*.pdi
+*.o
+*.exe
+*.log
+*.jou
+*.xclbin
+*.info
+*.bin
+*.bak

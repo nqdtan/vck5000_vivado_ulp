@@ -5,7 +5,7 @@ APP=app.exe
 
 .PHONY: run
 
-$(APP): host.cpp fpga.xclbin
+$(APP): host.cpp
 	g++ -Wall -g -std=c++14 host.cpp -o $(APP) -I$(XILINX_XRT)/include/ -L$(XILINX_XRT)/lib/ -lOpenCL -lpthread -lrt -lstdc++ -lxrt_coreutil
 
 .PHONY: compile
