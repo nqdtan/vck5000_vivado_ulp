@@ -45,12 +45,12 @@ int main(int argc, char *argv[]) {
 
   int len = 16; // number of 32b items
   // host buffers (x86)
-  u32 *host_mm0   = new u32 [len];
-  u32 *host_mm1   = new u32 [len];
-  u32 *host_mm2   = new u32 [len];
+  u32 *host_mm0 = new u32 [len];
+  u32 *host_mm1 = new u32 [len];
+  u32 *host_mm2 = new u32 [len];
   // device buffers (device DDR)
   xrt::bo dev_mm0 = xrt::bo(device, len * sizeof(u32), xrt::bo::flags::normal, 0);
-  xrt::bo dev_mm1  = xrt::bo(device, len * sizeof(u32), xrt::bo::flags::normal, 0);
+  xrt::bo dev_mm1 = xrt::bo(device, len * sizeof(u32), xrt::bo::flags::normal, 0);
 
   for (int i = 0; i < len; i++) {
     host_mm0[i] = i * 2 + 1;
@@ -62,20 +62,20 @@ int main(int argc, char *argv[]) {
   data_mover_mm_write(dev_mm0, host_mm0, PL_BRAM_BASE_ADDR, len);
 
   std::cout << "Configuring AIE...\n";
-	XAie_SetupConfig(ConfigPtr, XAIE_DEV_GEN_AIE, XAIE_BASE_ADDR,
-			XAIE_COL_SHIFT, XAIE_ROW_SHIFT,
-			XAIE_NUM_COLS, XAIE_NUM_ROWS, XAIE_SHIM_ROW,
-			XAIE_RES_TILE_ROW_START, XAIE_RES_TILE_NUM_ROWS,
-			XAIE_AIE_TILE_ROW_START, XAIE_AIE_TILE_NUM_ROWS);
+  XAie_SetupConfig(ConfigPtr, XAIE_DEV_GEN_AIE, XAIE_BASE_ADDR,
+    XAIE_COL_SHIFT, XAIE_ROW_SHIFT,
+    XAIE_NUM_COLS, XAIE_NUM_ROWS, XAIE_SHIM_ROW,
+    XAIE_RES_TILE_ROW_START, XAIE_RES_TILE_NUM_ROWS,
+    XAIE_AIE_TILE_ROW_START, XAIE_AIE_TILE_NUM_ROWS);
 
-	XAie_InstDeclare(DevInst, &ConfigPtr);
+  XAie_InstDeclare(DevInst, &ConfigPtr);
 
   AieRC RC = XAIE_OK;
-	RC = XAie_CfgInitialize(&DevInst, &ConfigPtr);
-	if (RC != XAIE_OK) {
-		std::cout << "Driver initialization failed.\n";
-		return -1;
-	}
+  RC = XAie_CfgInitialize(&DevInst, &ConfigPtr);
+  if (RC != XAIE_OK) {
+    std::cout << "Driver initialization failed.\n";
+    return -1;
+  }
 
   // These XAie configs should be embedded in CDO binary files that are stored within
   // an xclbin file. They should not be called in a host program since they involve
@@ -97,9 +97,9 @@ int main(int argc, char *argv[]) {
   }
 
   // Init Config
-	XAie_CoreReset(&DevInst, XAie_TileLoc(18, 1));
-	XAie_CoreUnreset(&DevInst, XAie_TileLoc(18, 1));
-	XAie_CoreConfigureDone(&DevInst, XAie_TileLoc(18, 1));
+  XAie_CoreReset(&DevInst, XAie_TileLoc(18, 1));
+  XAie_CoreUnreset(&DevInst, XAie_TileLoc(18, 1));
+  XAie_CoreConfigureDone(&DevInst, XAie_TileLoc(18, 1));
 
   // SHIM -> AIE =============
   XAie_StrmConnCctEnable(&DevInst, XAie_TileLoc(18, 1), SOUTH, 2, DMA, 0);

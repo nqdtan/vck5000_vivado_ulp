@@ -45,9 +45,7 @@ ipx::package_project -root_dir kernel_pack_$top -vendor xilinx.com -library RTLK
 ipx::unload_core kernel_pack_$top/component.xml
 ipx::edit_ip_in_project -upgrade true -name tmp_edit_project -directory kernel_pack_$top kernel_pack_$top/component.xml
 set_property core_revision 2 [ipx::current_core]
-foreach up [ipx::get_user_parameters] {
-  ipx::remove_user_parameter [get_property NAME $up] [ipx::current_core]
-}
+
 set_property sdx_kernel true [ipx::current_core]
 set_property sdx_kernel_type rtl [ipx::current_core]
 ipx::create_xgui_files [ipx::current_core]
