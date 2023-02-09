@@ -18,9 +18,3 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 # DEALINGS IN THE SOFTWARE.
 ############################################################
-
-# Set pdi properties to accelerate device download
-set_property bitstream.general.npiDmaMode Yes [current_design]
-set_property bitstream.general.compress true [current_design]
-set_param place.runBufgInsertion false
-set_param place.runBufgInsertionVersal false
