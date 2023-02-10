@@ -6,7 +6,7 @@ SRC_DIR := src/hls/proj/solution_$(top)/syn/verilog
 SRC := $(SRC_DIR)/*.v
 
 KERNEL_XML := kernel_pack_$(top)/component.xml
-ULP_BD := myproj_$(top)/project_1.srcs/sources_1/bd/ulp/ulp.bd
+ULP_BD := myproj_$(top)/project_1.srcs/sources_1/bd/ulp_inst_0/ulp_inst_0.bd
 XPR := $(project_name)/$(project_name).xpr
 
 jobs := 1
