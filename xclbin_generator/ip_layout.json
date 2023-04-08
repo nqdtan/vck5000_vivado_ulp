@@ -1,0 +1,15 @@
+{
+    "ip_layout": {
+        "m_count": "1",
+        "m_ip_data": [
+            {
+                "m_type": "IP_KERNEL",
+                "m_int_enable": "1",
+                "m_interrupt_id": "1",
+                "m_ip_control": "AP_CTRL_HS",
+                "m_base_address": "0x20200001000",
+                "m_name": "vecadd:vecadd"
+            }
+        ]
+    }
+}

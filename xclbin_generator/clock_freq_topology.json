@@ -1,23 +1,16 @@
 {
-    "schema_version": {
-        "major": "1",
-        "minor": "0",
-        "patch": "0"
-    },
     "clock_freq_topology": {
         "m_count": "2",
         "m_clock_freq": [
             {
-                "m_freq_Mhz": "200",
-                "m_type": "DATA",
-                "m_name": "DATA_CLK",
-                "m_original_name": "blp_s_aclk_kernel_00"
+                "m_freq_Mhz": "100",
+                "m_type": "KERNEL",
+                "m_name": "KERNEL_CLK"
             },
             {
                 "m_freq_Mhz": "300",
-                "m_type": "KERNEL",
-                "m_name": "KERNEL_CLK",
-                "m_original_name": "blp_s_aclk_kernel_01"
+                "m_type": "DATA",
+                "m_name": "DATA_CLK"
             }
         ]
     }

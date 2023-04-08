@@ -1,0 +1,13 @@
+{
+    "partition_metadata": {
+        "schema_version": {
+            "major": "0x1",
+            "minor": "0x0"
+        },
+        "interfaces": [
+            {
+                "interface_uuid": "eaae3fb8b262b65b21fec0676792ebfc"
+            }
+        ]
+    }
+}

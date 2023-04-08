@@ -1,4 +1,4 @@
-utils/hw_bb_locked.dcp
+utils/*_bb_locked.dcp
 utils/iprepo
 *.pdi
 *.o
