@@ -9,11 +9,11 @@ To facilitate some customizability, the examples shown here can be built with Vi
 
 ## Development Environment
 
-**Base platform**: xilinx_vck5000_gen3x16_xdma_1_202120_1
+**Base platform**: xilinx_vck5000_gen4x8_qdma_2_202220_1
 
-**Vitis**: 2021.2
+**Vitis**: 2022.2
 
-**XRT**: 2.12.447 (2021.2)
+**XRT**: 2.14.384 (2022.2)
 
 **Linux kernel**: 5.4.0-42-generic
 
@@ -57,7 +57,7 @@ This simple example demonstrates how to configure a PL kernel (vecadd) to perfor
   make ulp_bd top=vecadd
   
   # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
-  # P&R the ulp and link it with the static blp (hw_bb_locked.dcp)
+  # P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
   make rm_project top=vecadd
 ```
 
@@ -109,7 +109,7 @@ This simple example demonstrates how to configure the AIE (Tile core, Tile DMA, 
   make ulp_bd top=data_mover_mm2mm aie=1
   
   # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
-  # P&R the ulp and link it with the static blp (hw_bb_locked.dcp)
+  # P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
   make rm_project top=data_mover_mm2mm
 ```
 

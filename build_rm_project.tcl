@@ -2,8 +2,6 @@ set project_name [lindex $argv 0]
 set kernel [lindex $argv 1]
 set jobs [lindex $argv 2]
 
-set_param board.repoPaths /tools/C/tan.nqd/vck5000_board_files
-
 create_project -force $project_name $project_name -part xcvc1902-vsvd1760-2MP-e-S
 set_property board_part xilinx.com:vck5000:part0:1.0 [current_project]
 

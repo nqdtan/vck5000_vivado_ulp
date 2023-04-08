@@ -1,6 +1,6 @@
 {
     "mem_topology": {
-        "m_count": "2",
+        "m_count": "1",
         "m_mem_data": [
             {
                 "m_type": "MEM_DDR4",
@@ -8,13 +8,6 @@
                 "m_sizeKB": "0xc00000",
                 "m_tag": "MC_NOC0",
                 "m_base_address": "0xc100000000"
-            },
-            {
-                "m_type": "MEM_DRAM",
-                "m_used": "0",
-                "m_sizeKB": "0x80",
-                "m_tag": "BRAM",
-                "m_base_address": "0x20204000000"
             }
         ]
     }

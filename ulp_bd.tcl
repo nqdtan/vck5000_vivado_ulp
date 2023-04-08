@@ -30,8 +30,6 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
    return 1
 }
 
-#set_param board.repoPaths /tools/C/tan.nqd/vck5000_board_files
-
 ################################################################
 # START
 ################################################################
