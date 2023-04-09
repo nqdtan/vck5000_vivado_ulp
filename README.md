@@ -1,5 +1,5 @@
-# vck5000_vivado_custom_ulp_design
-An alternative Vivado custom design example (to fully Vitis) for the User Logic Partition targeting VCK5000
+# vck5000_vivado_ulp
+Vivado ulp design example for the User Logic Partition targeting VCK5000
 
 ## Description
 
@@ -133,7 +133,10 @@ After the Vivado project build completes, a platform device image will be genera
 
 ```
 cp xcl_generator/ulp.xclbin host_sw_with_aie/
-cd host_sw_with_aie
+cd aie_core_elf
+# Generate ELF file for AIE core
+make compile
+cd ../host_sw_with_aie
 make compile
 make run
 ```

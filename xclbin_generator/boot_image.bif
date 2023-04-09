@@ -2,7 +2,7 @@ all:
 {
     image
     {
-        { type=bootimage, file=level0_i_ulp_my_rm_partial.pdi }
+        { type=bootimage, file=top_i_ulp_my_rm_partial.pdi }
     }
     image
     {

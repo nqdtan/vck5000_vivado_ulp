@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom">
-  <platform vendor="xilinx" boardid="vck5000" name="gen3x16_xdma_1" featureRomTime="0">
+  <platform vendor="xilinx" boardid="vck5000" name="gen4x8_qdma_2" featureRomTime="0">
     <version major="202120" minor="1"/>
     <description/>
     <board name="xilinx.com:vck5000:1.0" vendor="xilinx.com" fpga="xcvc1902-vsvd1760-2MP-e-S">
       <interfaces>
-        <interface id="int1" name="PCIe" type="gen3x16"/>
+        <interface id="int1" name="PCIe" type="gen4x8"/>
       </interfaces>
       <memories>
         <memory name="mem0" type="ddr4" size="8GB"/>
