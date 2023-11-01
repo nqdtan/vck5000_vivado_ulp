@@ -2,7 +2,7 @@
 
 export XILINX_XRT=/opt/xilinx/xrt
 export XAIENGINEV2=/home/nqdtan/embeddedsw/XilinxProcessorIPLib/drivers/aienginev2
-export XILINX_VITIS=/home/nqdtan/Xilinx/Vitis/2021.2
+export XILINX_VITIS=/home/nqdtan/Xilinx/Vitis/2022.2
 
 export AIETOOLS=${XILINX_VITIS}/aietools
 source ${XILINX_VITIS}/settings64.sh

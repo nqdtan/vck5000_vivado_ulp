@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>vck5000_vivado_ulp | An alternative Vivado custom design example (to fully Vitis) for the User Logic Partition targeting VCK5000</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="vck5000_vivado_ulp" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An alternative Vivado custom design example (to fully Vitis) for the User Logic Partition targeting VCK5000" />
+<meta property="og:description" content="An alternative Vivado custom design example (to fully Vitis) for the User Logic Partition targeting VCK5000" />
+<link rel="canonical" href="https://nqdtan.github.io/vck5000_vivado_ulp/" />
+<meta property="og:url" content="https://nqdtan.github.io/vck5000_vivado_ulp/" />
+<meta property="og:site_name" content="vck5000_vivado_ulp" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="vck5000_vivado_ulp" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"An alternative Vivado custom design example (to fully Vitis) for the User Logic Partition targeting VCK5000","headline":"vck5000_vivado_ulp","name":"vck5000_vivado_ulp","url":"https://nqdtan.github.io/vck5000_vivado_ulp/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/vck5000_vivado_ulp/assets/css/style.css?v=a4d4ac6be53d49b5e5dadaff2878eabd169ba6ad">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+<meta name="google-site-verification" content="Jxly9qFni3NQUT2jrr1n5kNRZddE3ukz7wcDMtayfn4" />
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/vck5000_vivado_ulp/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+
+      <h1 id="vck5000_vivado_ulp">vck5000_vivado_ulp</h1>
+<p>Vivado ulp design example for the User Logic Partition targeting VCK5000</p>
+
+<h2 id="description">Description</h2>
+
+<p>This repository shows two example designs, one is PL-only (vecadd) and the other involves AIE (add-one) plus PL (data mover and BRAM controller) targeting VCK5000 Versal card. For these PCIe-based cards, a Xilinx base platform (blp) is typically provided as a static design to handle system management (e.g., clock scaling, data transfer between host and device over PCIe), and users launch Vitis to design a (Partial) Reconfigurable user partition logic (ulp) that conforms with the interface present in the base platform.</p>
+
+<p>To facilitate some customizability, the examples shown here can be built with Vivado only (along with some utility scripts from Vitis to emit necessary metadata and bitstream files to ensure the card operates correctly). Most of the toolchain scripts and constraint files in this repo are extracted from the Vitis flow with some modification. Note that this is not a fully-automated flow that would work out-of-the-box for any kernels (though doable with more scripting effort), and one might be able to achieve the same customizability in Vitis if using the TCL hooks effectively. This is intended for someone who would like to mainly work with Vivado hardware development flow. Similar to Vitis, the final output is an xclbin file combining a partial FPGA bitstream for configuring the ulp of the target device, and some metadata required by XRT drivers such as operating user kernel clock or AXI4-Lite MMIO register adddresses.</p>
+
+<h2 id="development-environment">Development Environment</h2>
+
+<p><strong>Base platform</strong>: xilinx_vck5000_gen4x8_qdma_2_202220_1</p>
+
+<p><strong>Vitis</strong>: 2022.2</p>
+
+<p><strong>XRT</strong>: 2.14.384 (2022.2)</p>
+
+<p><strong>Linux kernel</strong>: 5.4.0-42-generic</p>
+
+<h2 id="general-setup">General setup</h2>
+<ol>
+  <li>Build the following custom libxaiengine (required if you would like to build and run the PL + AIE example). It should be built on a machine that hosts a VCK5000 card.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone -b aiev2_custom https://github.com/nqdtan/embeddedsw.git
+cd embeddedsw/XilinxProcessorIPLib/drivers/aienginev2/src
+make -f Makefile.Linux
+</code></pre></div></div>
+
+<ol>
+  <li>Please make sure to change the paths to the software tools in <em>settings.sh</em> according to your environment setup. Then do</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source settings.sh
+</code></pre></div></div>
+
+<ol>
+  <li>Follow the instruction in <a href="https://github.com/nqdtan/vck5000_vivado_custom_ulp_design/tree/main/utils">utils/README.md</a> to get the extra files needed to build the designs.</li>
+</ol>
+
+<h2 id="pl-only-example">[PL-only example]</h2>
+
+<h3 id="about">About</h3>
+
+<p>This simple example demonstrates how to configure a PL kernel (vecadd) to perform computation on host-allocated buffers.</p>
+
+<h3 id="build-steps">Build steps</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd src/hls
+  # Generate HLS RTL for vecadd kernel
+  vitis_hls run_hls vecadd
+  cd ../../
+  # Pack vecadd RTL as IP so that it can be imported to a Vivado Block Design
+  make kernel_pack top=vecadd
+  
+  # Build Vivado Block Design with vecadd HLS IP + some necessary logic
+  # for ulp (adhere to the interface provided by the blp)
+  # Upon completion, you can open the project (myproject_vecadd) to inspect
+  # the Block design
+  make ulp_bd top=vecadd
+  
+  # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
+  # P&amp;R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
+  make rm_project top=vecadd
+</code></pre></div></div>
+
+<p>After the Vivado project build completes, a platform device image will be generated (PDI). We can then generate an xclbin file to program the card</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd xclbin_generator
+  cp ../&lt;project_rm_vecadd_*&gt;/&lt;project_rm_vecadd_*&gt;.runs/impl_1/level0_i_ulp_my_rm_partial.pdi .
+  
+  # The script will embed the metadata, such as kernel name, operating kernel clock,
+  # AXI4-Lite MM register offsets, etc. along with the PDI to emit ulp.xclbin.
+  # The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
+  ./xclbin_gen.sh
+</code></pre></div></div>
+
+<h3 id="host-execution">Host Execution</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp xcl_generator/ulp.xclbin host_sw/
+cd host_sw
+make compile
+make run
+</code></pre></div></div>
+
+<h2 id="pl--aie-example">[PL + AIE example]</h2>
+
+<h3 id="about-1">About</h3>
+
+<p>Please make sure libxaie is built before compiling and running the host code. We use the XAie API from libxaie (v2) to configure the AIE array. Unlike the ARM-based platform (e.g., VCK190), the AIE address space is not visible to the x86 host. Therefore, we use a PL module (data_mover_mm2mm) as a master to configure the AIE over the NoC. The XAie exposes the configuration data (such as tile address and value) to the host via the <a href="https://github.com/nqdtan/embeddedsw/blob/aiev2_custom/XilinxProcessorIPLib/drivers/aienginev2/src/io_backend/ext/xaie_debug.c">(custom) IO DEBUG backend</a>; the host then programs the PL data mover to send the configuration data to AIE using AXI Memory-mapped transactions.</p>
+
+<p>In this example, an array is initialized in the host program and transferred to the PL BRAM. The data is then copied to the Data Memory of AIE Tile (18, 1) using ShimDMA of the AIE NOC interface Tile (18, 0). The core updates the values of the array (adds one) before sending it back to the PL BRAM and eventually to host. In this design, the AIE uses the Shim NOC to communicate with the PL through AXIMM, no PLIO resource is used and you could test with different <a href="https://docs.xilinx.com/r/en-US/am009-versal-ai-engine/AI-Engine-Array-Interface-Architecture">AIE NOC interface tiles</a> as well.</p>
+
+<p>This simple example demonstrates how to configure the AIE (Tile core, Tile DMA, Shim DMA, Stream switches, etc.) in user space to move data between AIE, PL, and x86 host.</p>
+
+<h3 id="build-steps-1">Build steps</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd src/hls
+  # Generate HLS RTL for data_mover_mm2mm kernel
+  vitis_hls run_hls data_mover_mm2mm
+  cd ../../
+  # Pack data_mover_mm2mm RTL as IP so that it can be imported to a Vivado Block Design
+  make kernel_pack top=data_mover_mm2mm
+  
+  # Build Vivado Block Design with data_mover_mm2mm HLS IP + some necessary logic
+  # for ulp (adhere to the interface provided by the blp)
+  # Upon completion, you can open the project (myproject_data_mover_mm2mm) to inspect
+  # the Block design
+  make ulp_bd top=data_mover_mm2mm aie=1
+  
+  # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
+  # P&amp;R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
+  make rm_project top=data_mover_mm2mm
+</code></pre></div></div>
+
+<p>After the Vivado project build completes, a platform device image will be generated (PDI). We can then generate an xclbin file to program the card, but before that, we need some CDO (configuration data object) binary files for configuring the AIE. The CDO files will also be packaged in the final xclbin file so that the firmware controller can properly initialize the AIE array.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd aie_cdo
+  make run
+  
+  cd ../xclbin_generator
+  cp ../&lt;project_rm_data_mover_mm2mm_*&gt;/&lt;project_rm_data_mover_mm2mm_*&gt;.runs/impl_1/level0_i_ulp_my_rm_partial.pdi .
+  
+  # The script will embed the metadata, such as kernel name, operating kernel clock,
+  # AXI4-Lite MM register offsets, etc. along with the PDI and aie_cdo bin files to emit ulp.xclbin.
+  # The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
+  # Take a look at boot_image.bif to see which aie_cdo bin files are included.
+  ./xclbin_gen_with_aie.sh
+</code></pre></div></div>
+
+<h3 id="host-execution-1">Host Execution</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp xcl_generator/ulp.xclbin host_sw_with_aie/
+cd aie_core_elf
+# Generate ELF file for AIE core
+make compile
+cd ../host_sw_with_aie
+make compile
+make run
+</code></pre></div></div>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
+

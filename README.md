@@ -23,16 +23,17 @@ To facilitate some customizability, the examples shown here can be built with Vi
 ```
 git clone -b aiev2_custom https://github.com/nqdtan/embeddedsw.git
 cd embeddedsw/XilinxProcessorIPLib/drivers/aienginev2/src
-make -f Makefile.Linux
+make -f Makefile.Linux CFLAGS+=-DPL
 ```
 
-2. Please make sure to change the paths to the software tools in *settings.sh* according to your environment setup. Then do
+2. Clone this repository. Please make sure to change the paths to the software tools in *settings.sh* according to your environment setup.
 
 ```
+git clone -b 2022.2 https://github.com/nqdtan/vck5000_vivado_ulp.git
 source settings.sh
 ```
 
-3. Follow the instruction in [utils/README.md](https://github.com/nqdtan/vck5000_vivado_custom_ulp_design/tree/main/utils) to get the extra files needed to build the designs.
+3. Follow the instruction in [utils/README.md](https://github.com/nqdtan/vck5000_vivado_ulp/tree/main/utils) to get the extra files needed to build the designs.
 
 ## [PL-only example]
 
