@@ -29,11 +29,12 @@ make -f Makefile.Linux CFLAGS+=-DPL
 2. Clone this repository. Please make sure to change the paths to the software tools in *settings.sh* according to your environment setup.
 
 ```
+cd ../../../../../
 git clone -b 2022.2 https://github.com/nqdtan/vck5000_vivado_ulp.git
 source settings.sh
 ```
 
-3. Follow the instruction in [utils/README.md](https://github.com/nqdtan/vck5000_vivado_ulp/tree/main/utils) to get the extra files needed to build the designs.
+3. Follow the instruction in [utils/README.md](https://github.com/nqdtan/vck5000_vivado_ulp/tree/2022.2/utils) to get the extra files needed to build the designs.
 
 ## [PL-only example]
 
@@ -44,41 +45,41 @@ This simple example demonstrates how to configure a PL kernel (vecadd) to perfor
 ### Build steps
 
 ```
-  cd src/hls
-  # Generate HLS RTL for vecadd kernel
-  vitis_hls run_hls vecadd
-  cd ../../
-  # Pack vecadd RTL as IP so that it can be imported to a Vivado Block Design
-  make kernel_pack top=vecadd
-  
-  # Build Vivado Block Design with vecadd HLS IP + some necessary logic
-  # for ulp (adhere to the interface provided by the blp)
-  # Upon completion, you can open the project (myproject_vecadd) to inspect
-  # the Block design
-  make ulp_bd top=vecadd
-  
-  # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
-  # P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
-  make rm_project top=vecadd
+cd ${ROOT_DIR}/src/hls
+# Generate HLS RTL for vecadd kernel
+vitis_hls run_hls.tcl vecadd
+cd ${ROOT_DIR}
+# Pack vecadd RTL as IP so that it can be imported to a Vivado Block Design
+make kernel_pack top=vecadd
+
+# Build Vivado Block Design with vecadd HLS IP + some necessary logic
+# for ulp (adhere to the interface provided by the blp)
+# Upon completion, you can open the project (myproject_vecadd) to inspect
+# the Block design
+make ulp_bd top=vecadd
+
+# Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
+# P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
+make rm_project top=vecadd
 ```
 
 After the Vivado project build completes, a platform device image will be generated (PDI). We can then generate an xclbin file to program the card
 
 ```
-  cd xclbin_generator
-  cp ../<project_rm_vecadd_*>/<project_rm_vecadd_*>.runs/impl_1/level0_i_ulp_my_rm_partial.pdi .
-  
-  # The script will embed the metadata, such as kernel name, operating kernel clock,
-  # AXI4-Lite MM register offsets, etc. along with the PDI to emit ulp.xclbin.
-  # The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
-  ./xclbin_gen.sh
+cd ${ROOT_DIR}/xclbin_generator
+cp ${ROOT_DIR}/<project_rm_vecadd_*>/<project_rm_vecadd_*>.runs/impl_1/top_i_ulp_my_rm_partial.pdi .
+
+# The script will embed the metadata, such as kernel name, operating kernel clock,
+# AXI4-Lite MM register offsets, etc. along with the PDI to emit ulp.xclbin.
+# The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
+./xclbin_gen.sh
 ```
 
 ### Host Execution
 
 ```
-cp xcl_generator/ulp.xclbin host_sw/
-cd host_sw
+cd ${ROOT_DIR}/host_sw
+cp ${ROOT_DIR}/xclbin_generator/ulp.xclbin .
 make compile
 make run
 ```
@@ -96,48 +97,48 @@ This simple example demonstrates how to configure the AIE (Tile core, Tile DMA, 
 ### Build steps
 
 ```
-  cd src/hls
-  # Generate HLS RTL for data_mover_mm2mm kernel
-  vitis_hls run_hls data_mover_mm2mm
-  cd ../../
-  # Pack data_mover_mm2mm RTL as IP so that it can be imported to a Vivado Block Design
-  make kernel_pack top=data_mover_mm2mm
-  
-  # Build Vivado Block Design with data_mover_mm2mm HLS IP + some necessary logic
-  # for ulp (adhere to the interface provided by the blp)
-  # Upon completion, you can open the project (myproject_data_mover_mm2mm) to inspect
-  # the Block design
-  make ulp_bd top=data_mover_mm2mm aie=1
-  
-  # Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
-  # P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
-  make rm_project top=data_mover_mm2mm
+cd ${ROOT_DIR}/src/hls
+# Generate HLS RTL for data_mover_mm2mm kernel
+vitis_hls run_hls.tcl data_mover_mm2mm
+cd ${ROOT_DIR}
+# Pack data_mover_mm2mm RTL as IP so that it can be imported to a Vivado Block Design
+make kernel_pack top=data_mover_mm2mm
+
+# Build Vivado Block Design with data_mover_mm2mm HLS IP + some necessary logic
+# for ulp (adhere to the interface provided by the blp)
+# Upon completion, you can open the project (myproject_data_mover_mm2mm) to inspect
+# the Block design
+make ulp_bd top=data_mover_mm2mm aie=1
+
+# Build Vivado Reconfigurable Module Project (PR flow). This flow will synthesize,
+# P&R the ulp and link it with the static blp (xilinx_vck5000_gen4x8_qdma_2_202220_1_bb_locked.dcp)
+make rm_project top=data_mover_mm2mm
 ```
 
 After the Vivado project build completes, a platform device image will be generated (PDI). We can then generate an xclbin file to program the card, but before that, we need some CDO (configuration data object) binary files for configuring the AIE. The CDO files will also be packaged in the final xclbin file so that the firmware controller can properly initialize the AIE array.
 
 ```
-  cd aie_cdo
-  make run
-  
-  cd ../xclbin_generator
-  cp ../<project_rm_data_mover_mm2mm_*>/<project_rm_data_mover_mm2mm_*>.runs/impl_1/level0_i_ulp_my_rm_partial.pdi .
-  
-  # The script will embed the metadata, such as kernel name, operating kernel clock,
-  # AXI4-Lite MM register offsets, etc. along with the PDI and aie_cdo bin files to emit ulp.xclbin.
-  # The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
-  # Take a look at boot_image.bif to see which aie_cdo bin files are included.
-  ./xclbin_gen_with_aie.sh
+cd ${ROOT_DIR}/aie_cdo
+make run
+
+cd ${ROOT_DIR}/xclbin_generator
+cp ${ROOT_DIR}/<project_rm_data_mover_mm2mm_*>/<project_rm_data_mover_mm2mm_*>.runs/impl_1/top_i_ulp_my_rm_partial.pdi .
+
+# The script will embed the metadata, such as kernel name, operating kernel clock,
+# AXI4-Lite MM register offsets, etc. along with the PDI and aie_cdo bin files to emit ulp.xclbin.
+# The metadata is required and queried by the XRT drivers (xclmgmt, xocl) running on the host.
+# Take a look at boot_image.bif to see which aie_cdo bin files are included.
+./xclbin_gen_with_aie.sh
 ```
 
 ### Host Execution
 
 ```
-cp xcl_generator/ulp.xclbin host_sw_with_aie/
-cd aie_core_elf
+cd ${ROOT_DIR}/host_sw_with_aie/aie_core_elf
+cp ${ROOT_DIR}/xclbin_generator/ulp.xclbin ../
 # Generate ELF file for AIE core
 make compile
-cd ../host_sw_with_aie
+cd ${ROOT_DIR}/host_sw_with_aie
 make compile
 make run
 ```
